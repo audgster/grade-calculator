@@ -1,4 +1,10 @@
-.course-header {}
+.course-header>* {
+  display: inline-block;
+}
+
+.course-header {
+  width: 50%;
+}
 
 .categories {}
 
@@ -47,7 +53,18 @@
 }
 
 .add-category {
-  width: auto;
+  max-width: 400px;
+  float: right;
+}
+
+.add-category>* {
+  display: inline-block;
+}
+
+#add-category-form {
+  float: right;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 th {

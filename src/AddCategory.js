@@ -31,15 +31,14 @@ class AddCategory extends React.Component {
 
   render() {
     return (
-    <div>
+    <div id="add-category-form">
       <form onSubmit = { this.handleSubmitEvent }>
         <div className="add-category">
           <label htmlFor="categoryName">New Assignment Category</label>
           <input type="text" id="categoryName" required value={this.state.name} onChange={ this.handleChange } />
+          <button type="submit">Add</button>
+          <button type="reset">Cancel</button>
         </div>
-
-        <button className="add-category" type="submit">Add</button>
-        <button className="add-category" type="reset">Cancel</button>
       </form>
     </div>
   );}
