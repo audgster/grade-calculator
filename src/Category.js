@@ -2,62 +2,74 @@ var React = require('react');
 var AssignmentList = require('./AssignmentList');
 var AddAssignment = require('./AddAssignment');
 
-var Category = React.createClass({
-  // Initial state is an empty list of assignments
-  getInitialState: function() {
-    return {
+class Category extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
       assignments: {},
       average: 0
-    };
-  },
+    }
 
-  updateAssignemnts: function(newAssignmentList) {
+    this.addAssignment = this.addAssignment.bind(this)
+    this.removeAssignment = this.removeAssignment.bind(this)
+    this.clearAssignments = this.clearAssignments.bind(this)
+
+  }
+
+  updateAssignments(newAssignmentList) {
     this.setState({
       assignments: newAssignmentList,
       average: this.computeCategoryAverage(newAssignmentList)
     });
-  },
+  }
 
-  addAssignment: function(newAssignment) {
+  addAssignment(newAssignment) {
     var assignmentList = this.state.assignments;
     assignmentList[newAssignment.id] = newAssignment;
-    this.updateAssignemnts(assignmentList);
-  },
+    this.updateAssignments(assignmentList);
+  }
 
-  removeAssignment: function(deletedAssignment) {
+  removeAssignment(deletedAssignment) {
     var assignmentList = this.state.assignments;
     delete assignmentList[deletedAssignment.id];
-    this.updateAssignemnts(assignmentList);
-  },
+    this.updateAssignments(assignmentList);
+  }
 
-  clearAssignments: function() {
-    this.updateAssignemnts({});
-  },
+  clearAssignments() {
+    this.updateAssignments({});
+  }
 
-  computeCategoryAverage: function(assignments) {
+  computeCategoryAverage(assignments) {
     var assignmentTotal = 0
-    for (var i = 0; i < assignments.length; i++){
-      assignmentTotal = assignmentTotal + assignments[i].grade
-    }
+    var numberOfAssignments = Object.keys(assignments).length
 
-    return assignmentTotal/(assignments.length > 0 ? assignments.length : 1)
-  },
+    Object.keys(assignments).forEach(function(key,index) {
+      assignmentTotal = assignmentTotal + assignments[key].grade
+    });
 
-  render: function() {
+    return assignmentTotal/(numberOfAssignments > 0 ? numberOfAssignments : 1)
+  }
+
+  render() {
     var assignments = this.state.assignments
     var average = this.state.average
     return (
-      <div>
-        <h3>{ this.props.name }</h3>
-        <h4>Average: { average }</h4>
+      <div className="category">
+        <div className="category-header">
+          <h3 className="category-name">{ this.props.name }</h3>
+          <h4 className="category-average">Average: { average }</h4>
+        </div>
+        <div>
         <AssignmentList
           assignments = { assignments }
           removeOne = { this.removeAssignment }
           removeAll = { this.clearAssignments } />
         <AddAssignment addOne = { this.addAssignment }/>
+        </div>
       </div>
     )
   }
-});
+}
 
 module.exports = Category

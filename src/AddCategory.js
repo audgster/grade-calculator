@@ -1,33 +1,48 @@
 var React = require('react');
 var uuid = require('uuid');
 
-var AddCategory = React.createClass({
-  handleSubmitEvent: function (event) {
+class AddCategory extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {name: ''}
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmitEvent = this.handleSubmitEvent.bind(this);
+  }
+
+  handleSubmitEvent(event) {
     event.preventDefault();
 
     var category = {
       id: uuid.v4(),
-      name: this.refs.name.value.trim()
+      name: this.state.name.trim(),
+      average: 0
     };
 
     this.props.addOne(category);
-  },
 
-  render: function () {
+    this.setState({name: ''})
+  }
+
+  handleChange(event) {
+    this.setState({name: event.target.value})
+  }
+
+  render() {
     return (
     <div>
-      <h4>Add grade category</h4>
       <form onSubmit = { this.handleSubmitEvent }>
-        <div>
-          <label htmlFor="categoryName">Name</label>
-          <input type="text" id="categoryName" required ref="name" />
+        <div className="add-category">
+          <label htmlFor="categoryName">New Assignment Category</label>
+          <input type="text" id="categoryName" required value={this.state.name} onChange={ this.handleChange } />
         </div>
 
-        <button type="submit">Add</button>
-        <button type="reset">Cancel</button>
+        <button className="add-category" type="submit">Add</button>
+        <button className="add-category" type="reset">Cancel</button>
       </form>
     </div>
   );}
-});
+}
 
 module.exports = AddCategory

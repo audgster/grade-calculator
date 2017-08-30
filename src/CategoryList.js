@@ -1,12 +1,12 @@
 var React = require('react');
 var Category = require('./Category')
 
-var CategoryList = React.createClass({
-  getIdList: function(categories) {
+class CategoryList extends React.Component {
+  getIdList(categories) {
     return Object.keys(categories)
-  },
+  }
 
-  createCategoryListElements: function(categories) {
+  createCategoryListElements(categories) {
     var category;
 
     return this
@@ -19,19 +19,17 @@ var CategoryList = React.createClass({
             remove = { this.props.removeOne}
             key = { category.id } />);
       }.bind(this));
-  },
+  }
 
-  render: function() {
+  render() {
     var categories = this.props.categories;
     var categoryListElements = this.createCategoryListElements(categories);
     return (
-      <div>
-        <ul>
+      <div className="categories">
           {categoryListElements.length > 0 ? categoryListElements : null}
-        </ul>
       </div>
     );
   }
-});
+}
 
 module.exports = CategoryList

@@ -1,26 +1,27 @@
 var React = require('react');
 
-var Assignment = React.createClass({
-  handleSubmit: function(event) {
+class Assignment extends React.Component {
+  handleSubmit(event) {
     event.preventDefault();
     var assignmentId = this.props.assignment.id;
     this.props.remove(assignmentId);
-  },
+  }
 
-  render: function () {
+  render() {
     var assignment = this.props.assignment;
     return (
-      <div>
-        {assignment.name}: {assignment.grade}
-      </div>
+      <tr>
+        <td className="assignment-name">{assignment.name}</td>
+        <td className="assignment-grade">{assignment.grade}</td>
+      </tr>
     );
   }
-});
+}
 
 module.exports = Assignment
 
 /*
-<!form onSubmit = {this.handleSubmit}>
+<form onSubmit = {this.handleSubmit}>
   <button type="submit">Remove</button>
 </form>
 */

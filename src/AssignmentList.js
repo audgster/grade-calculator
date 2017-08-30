@@ -1,12 +1,12 @@
 var React = require('react');
 var Assignment = require('./Assignment')
 
-var AssignmentList = React.createClass({
-  getIdList: function(assignments) {
+class AssignmentList extends React.Component {
+  getIdList(assignments) {
     return Object.keys(assignments)
-  },
+  }
 
-  createAssignmentListElements: function(assignments) {
+  createAssignmentListElements(assignments) {
     var assignment;
 
     return this
@@ -18,19 +18,27 @@ var AssignmentList = React.createClass({
             remove = { this.props.removeOne}
             key = { assignment.id } />);
       }.bind(this));
-  },
+  }
 
-  render: function() {
+  render() {
     var assignments = this.props.assignments;
     var assignmentListElements = this.createAssignmentListElements(assignments);
     return (
       <div>
-        <ul>
-          {assignmentListElements.length > 0 ? assignmentListElements : null}
-        </ul>
+      <table>
+        <thead>
+        <tr>
+          <th className="assignment-name">Assignment Name</th>
+          <th className="assignment-grade">Grade</th>
+        </tr>
+        </thead>
+        <tbody>
+        {assignmentListElements.length > 0 ? assignmentListElements : null}
+        </tbody>
+      </table>
       </div>
     );
   }
-});
+}
 
 module.exports = AssignmentList

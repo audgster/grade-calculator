@@ -1,39 +1,62 @@
 var React = require('react');
 var uuid = require('uuid');
 
-var AddAssignment = React.createClass({
-  handleSubmitEvent: function (event) {
+class AddAssignment extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {name: '', grade: 0}
+
+    this.handleSubmitEvent = this.handleSubmitEvent.bind(this)
+    this.onNameChange = this.onNameChange.bind(this)
+    this.onGradeChange = this.onGradeChange.bind(this)
+  }
+
+  handleSubmitEvent(event) {
     event.preventDefault();
 
     var assignment = {
       id: uuid.v4(),
-      name: this.refs.name.value.trim(),
-      grade: parseInt(this.refs.grade.value.trim())
+      name: this.state.name.trim(),
+      grade: this.state.grade
     };
 
     this.props.addOne(assignment);
-  },
 
-  render: function () {
+    this.setState({name: '', grade: 0})
+  }
+
+  onNameChange(event) {
+    var currentState = this.state
+
+    this.setState({name: event.target.value, grade: currentState.grade})
+  }
+
+  onGradeChange(event) {
+    var currentState = this.state
+
+    this.setState({name: currentState.name, grade: parseInt(event.target.value)})
+  }
+
+  render() {
     return (
     <div>
-      <h4>Add assignment</h4>
       <form onSubmit = { this.handleSubmitEvent }>
-        <div>
+        <div className="add-assignment">
           <label htmlFor="assignmentName">Name</label>
-          <input type="text" id="assignmentName" required ref="name" />
+          <input type="text" value={this.state.name} id="assignmentName" required onChange={ this.onNameChange } />
         </div>
 
-        <div>
-          <label htmlFor="assignmentGrade">Description</label>
-          <input type="number" min="0" max="100" step="1" defaultValue="0" id="assignmentGrade" required ref="grade" />
+        <div className="add-assignment">
+          <label htmlFor="assignmentGrade">Grade</label>
+          <input type="number" value={this.state.grade} min="0" max="100" step="1" defaultValue="0" id="assignmentGrade" required onChange={this.onGradeChange}/>
         </div>
 
-        <button type="submit">Add</button>
-        <button type="reset">Cancel</button>
+        <button className="add-assignment" type="submit">Add</button>
+        <button className="add-assignment" type="reset">Cancel</button>
       </form>
     </div>
   );}
-});
+}
 
 module.exports = AddAssignment

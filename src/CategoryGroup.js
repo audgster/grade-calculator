@@ -2,60 +2,70 @@ var React = require('react');
 var CategoryList = require('./CategoryList')
 var AddCategory = require('./AddCategory')
 
-var CategoryGroup = React.createClass({
-  // Initial state is an empty list of assignments
-  getInitialState: function() {
-    return {
+class CategoryGroup extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
       categories: {},
       grade: 0
-    };
-  },
+    }
 
-  updateCategories: function(newCategoryList) {
+    this.addCategory = this.addCategory.bind(this)
+    this.removeCategory = this.removeCategory.bind(this)
+    this.clearCategories = this.clearCategories.bind(this)
+  }
+
+  updateCategories(newCategoryList) {
     this.setState({
       categories: newCategoryList,
       grade: this.computeGrade(newCategoryList)
     });
-  },
+  }
 
-  addCategory: function(newCategory) {
+  addCategory(newCategory) {
     var categoryList = this.state.categories;
     categoryList[newCategory.id] = newCategory;
     this.updateCategories(categoryList);
-  },
+  }
 
-  removeCategory: function(deletedCategory) {
+  removeCategory(deletedCategory) {
     var categoryList = this.state.categories;
     delete categoryList[deletedCategory.id];
     this.updateCategories(categoryList);
-  },
+  }
 
-  clearCategories: function() {
+  clearCategories() {
     this.updateCategories({});
-  },
+  }
 
-  computeGrade: function(categoryList) {
+  computeGrade(categoryList) {
     var gradeTotal = 0
-    for (var i = 0; i < categoryList.length; i++){
-      gradeTotal = gradeTotal + categoryList[i].average
-    }
-    return gradeTotal/(categoryList.length > 0 ? categoryList.length : 1)
-  },
+    var numberOfCategories = Object.keys(categoryList).length
 
-  render: function() {
+    Object.keys(categoryList).forEach(function(key,index) {
+      gradeTotal = gradeTotal + categoryList[key].average
+    });
+
+    return gradeTotal/(numberOfCategories > 0 ? numberOfCategories : 1)
+  }
+
+  render() {
     var categories = this.state.categories
     var grade = this.state.grade
     return (
       <div>
-        <h3>Grade: { grade }</h3>
+        <div className="course-header">
+          <h3>Course Grade: { grade }</h3>
+          <AddCategory addOne = { this.addCategory }/>
+        </div>
         <CategoryList
           categories = { categories }
           removeOne = { this.removeCategory }
           removeAll = { this.clearCategories } />
-        <AddCategory addOne = { this.addCategory }/>
       </div>
     )
   }
-});
+}
 
 module.exports = CategoryGroup
