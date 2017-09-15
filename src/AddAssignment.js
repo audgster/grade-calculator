@@ -35,7 +35,7 @@ class AddAssignment extends React.Component {
   onGradeChange(event) {
     var currentState = this.state
 
-    this.setState({name: currentState.name, grade: parseInt(event.target.value)})
+    this.setState({name: currentState.name, grade: parseInt(10,event.target.value)})
   }
 
   render() {
